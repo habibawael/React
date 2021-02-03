@@ -8,4 +8,10 @@ import 'popper.js/dist/popper'
 import 'bootstrap/dist/js/bootstrap'
 import ReactDOM from 'react-dom';
 import App from './App'
-ReactDOM.render(<App/>,document.getElementById('root'));
+
+import {Provider} from 'react-redux'
+import {createStore, applyMiddleware} from 'redux'
+import reducers from './reducers'
+
+const createStoreWithMW = applyMiddleware()(createStore)
+ReactDOM.render(<Provider store={createStoreWithMW(reducers)}><App/></Provider>,document.getElementById('root'));

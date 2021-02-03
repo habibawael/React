@@ -1,89 +1,66 @@
 import React from 'react';
 import './index.css';
-import {BrowserRouter as Router,Route, Switch,Link} from 'react-router-dom'
-import Headd from './components/Header';
-import Artist from './components/Artist';
-import ArtistDetails from './components/ArtistDetaiils'
+import {connect} from 'react-redux'
+import * as actions from './actions'
 
-// import Slideshow from './components/imageslide'
-// import Text from './components/textfill'
-
-// import Regis from './components/Register';
-// import Student from './components/Students';
-
-// class App extends React.Component{
-//   constructor(){
-//     super();
-//     this.state={
-//       Details :   [{
-//         name : "",
-//         age : "",
-//         i : 0
-//       }]
-//     }
-//   }
-
-//   add = (det)=>{
-    
-//     var x = this.state.Details.concat({ name : det.namesent,
-//                               age : det.agesent,
-//                               i : det.j})
-//     this.setState({Details : x})
-//   }
-  
-//   render(){
-//     return (
-//       <div>
-//         <Regis onadd = {this.add}></Regis>
-//         <Student list = {this.state.Details}></Student>
-        
-//       </div>
-//     )
-//   }
-// }
 class App extends React.Component{
+
+  constructor(){
+    super();
+    this.state ={
+      movieID : 0
+    }
+  }
   
   render(){
-    return (
-      <Router>
-        
-        <div>
-          <nav className="navbar navbar-expand-lg navbar-light bg-dark fixed-top">
-            <Link className="navbar-brand text-white" to="/home"><h2>Home</h2></Link>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
 
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mr-auto">
-                <li className="nav-item active">
-                  <Link className="nav-link text-white"  to="/artist/1"><h3>Artists </h3><span className="sr-only">(current)</span></Link>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          
-
-          <Switch>
-            <Route component={ArtistDetails} path="/artist/:id"></Route>
-            <Route component={Headd} path="/home"></Route>
-            <Route component={Headd} path="/" exact></Route>
-            <Route path="*" render={()=>(
-              <h1 className="alert alert-danger">404
-              <p>
-                Page Not Found
-              </p>
-              </h1>
-            )}>
-              
-            </Route>
-          </Switch>
-          
+    return(
+      <div>
+        <h2 className="text-center">Movies List </h2>
+        <hr></hr>
+        <div className="row">
+          <input type="button" className="btn btn-primary btn-lg col-3" value="Get Movies List" onClick={()=>this.props.getMovies()}></input>
+          <input type="number" className="bg-secondary offset-5 col-1"  value={this.state.movieID} onChange={
+                      (e) => {
+                          this.setState({movieID : e.target.value})
+                      }}></input>
+          <input type="button" className="btn btn-primary btn-lg col-3" value = "Get Movie Details by ID" onClick={()=>this.props.getMoviesbyID(parseInt(this.state.movieID))}></input>
         </div>
-      </Router>
+        <br></br>
+        <br></br>
+        <br></br>
+        <hr></hr>
+        {this.renderMovies(this.props)}
+        
+      </div>
     )
   }
+  
+  renderMovies = ({mList})=>{
+    if(mList){
+      return mList.map((movie)=>{
+        return (
+          <div className="alert alert-dark" key={movie.id}>
+            <p>{movie.title}</p>
+            <p>{movie.year}</p>
+          </div>
+        )
+      })
+    }
+    return <p>
+      No Movie available
+    </p>
+  }  
 }
 
-export default App;
+const mapReduxStateToComponentProps =(state) =>{
+  console.log(state)
+  return(
+    {
+      mList : state.moviesList
+    }
+  )
+}
+
+export default connect(mapReduxStateToComponentProps,actions)(App)
 
