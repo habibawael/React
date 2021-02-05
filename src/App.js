@@ -2,45 +2,9 @@ import React from 'react';
 import './index.css';
 import {BrowserRouter as Router,Route, Switch,Link} from 'react-router-dom'
 import Headd from './components/Header';
-import Artist from './components/Artist';
-import ArtistDetails from './components/ArtistDetaiils'
+import Student from './components/Student';
+import StudentDetails from './components/StudentDetaiils'
 
-// import Slideshow from './components/imageslide'
-// import Text from './components/textfill'
-
-// import Regis from './components/Register';
-// import Student from './components/Students';
-
-// class App extends React.Component{
-//   constructor(){
-//     super();
-//     this.state={
-//       Details :   [{
-//         name : "",
-//         age : "",
-//         i : 0
-//       }]
-//     }
-//   }
-
-//   add = (det)=>{
-    
-//     var x = this.state.Details.concat({ name : det.namesent,
-//                               age : det.agesent,
-//                               i : det.j})
-//     this.setState({Details : x})
-//   }
-  
-//   render(){
-//     return (
-//       <div>
-//         <Regis onadd = {this.add}></Regis>
-//         <Student list = {this.state.Details}></Student>
-        
-//       </div>
-//     )
-//   }
-// }
 class App extends React.Component{
   
   render(){
@@ -57,7 +21,7 @@ class App extends React.Component{
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item active">
-                  <Link className="nav-link text-white"  to="/artist/1"><h3>Artists </h3><span className="sr-only">(current)</span></Link>
+                  <Link className="nav-link text-white"  to="/student/1"><h3>Students </h3><span className="sr-only">(current)</span></Link>
                 </li>
               </ul>
             </div>
@@ -65,7 +29,7 @@ class App extends React.Component{
           
 
           <Switch>
-            <Route component={ArtistDetails} path="/artist/:id"></Route>
+            <Route component={StudentDetails} path="/student/:id"></Route>
             <Route component={Headd} path="/home"></Route>
             <Route component={Headd} path="/" exact></Route>
             <Route path="*" render={()=>(

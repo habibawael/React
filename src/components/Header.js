@@ -1,36 +1,67 @@
 import React from 'react'
-import Artist from './Artist'
+import Student from './Student'
 
 export default class Headd extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            artists : []
+            students : [],
+            keywords: ''
         }
-        this.baseURL = "http://localhost:3001/artists"
+        this.baseURL = "http://localhost:3001/students"
+    }
+    
+    keywordsChanged = (e) => {
+        
+        this.setState({ keywords: e.target.value })
     }
 
-    renderArtists({artists}){
-        if(artists&& artists.length>0){
-            return artists.map((artist)=>{
-                return <Artist key={artist.id} artistinfo={artist}/>
-            })
+
+    renderStudents({students}){
+        if(this.state.keywords !== "")
+        {
+            if(students && students.length>0){
+                return students.map((student)=>{
+                    if(student.name.toLowerCase().startsWith(this.state.keywords.toLowerCase()))
+                        return <Student key={student.id} studentinfo={student}/>
+
+                })
+            }
+            return(
+                <p className="text-danger">No students Available</p>
+            )
         }
-        return(
-            <p className="text-danger">No artists Available</p>
-        )
+        else{
+            if(students && students.length>0){
+                return students.map((student)=>{
+                    return <Student key={student.id} studentinfo={student}/>
+                })
+            }
+            return(
+                <p className="text-danger">No students Available</p>
+            )
+
+        }
     }
     render(){
         return(
             <div>
                 <header className="masthead">
-                    <div className="h-100 row">
-                        <img className="col-12" height="700px" src='/Images/cover.png'/>
-                    </div>
                 </header>
                 <br></br>
-                <h1 className="display-1 text-center font-weight-bold ">Browse Artists</h1>
-                {this.renderArtists(this.state)}
+                <br></br>
+                <br></br>
+                <h1 className="display-1 text-center font-weight-bold ">Students List</h1>
+                <input  className = "form-control" type="text" placeholder="Search by name"
+                    value={this.state.keywords}
+                    
+                    onChange={this.keywordsChanged}
+                />
+                <p>
+                    keywords:{this.state.keywords}
+                </p>
+
+                {this.renderStudents(this.state)}
             </div>
         )
     }
@@ -44,8 +75,8 @@ export default class Headd extends React.Component{
             }
         })
         .then((data)=>{
-            console.log(data);
-            this.setState({artists: data})
+            //console.log(data);
+            this.setState({students: data})
         })
         .catch((err)=>{
             console.log(err)
